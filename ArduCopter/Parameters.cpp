@@ -441,6 +441,47 @@ const AP_Param::Info Copter::var_info[] = {
     GSCALAR(acro_trainer,   "ACRO_TRAINER",     (uint8_t)ModeAcro::Trainer::LIMITED),
 #endif
 
+
+    // DroneServices Code START
+
+    // @Param: VENDOR PASSWORD 1
+    // @DisplayName: Vendor Password Part 1
+    // @Description: Vendor Password Part 1
+    // @User: Advanced
+    // @ReadOnly: True
+    GSCALAR(vendor_password_1, "VENDOR_PASS_1",   1),
+
+    // @Param: VENDOR PASSWORD 2
+    // @DisplayName: Vendor Password Part 2
+    // @Description: Vendor Password Part 2
+    // @User: Advanced
+    // @ReadOnly: True
+    GSCALAR(vendor_password_2, "VENDOR_PASS_2",   2),
+
+    // @Param: VENDOR PASSWORD 3
+    // @DisplayName: Vendor Password Part 3
+    // @Description: Vendor Password Part 3
+    // @User: Advanced
+    // @ReadOnly: True
+    GSCALAR(vendor_password_3, "VENDOR_PASS_3",   3),
+
+    // @Param: VENDOR PASSWORD 4
+    // @DisplayName: Vendor Password Part 4
+    // @Description: Vendor Password Part 4
+    // @User: Advanced
+    // @ReadOnly: True
+    GSCALAR(vendor_password_4, "VENDOR_PASS_4",   4),
+
+    // @Param: VENDOR PASSWORD 5
+    // @DisplayName: Vendor Password Part 5
+    // @Description: Vendor Password Part 5
+    // @User: Advanced
+    // @ReadOnly: True
+    GSCALAR(vendor_password_5, "VENDOR_PASS_5",   5),
+
+    // DroneServices Code END
+
+
     // variables not in the g class which contain EEPROM saved variables
 
 #if AP_CAMERA_ENABLED
