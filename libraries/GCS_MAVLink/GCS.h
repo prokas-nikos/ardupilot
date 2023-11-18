@@ -655,6 +655,17 @@ protected:
 
 private:
 
+    // DroneServices Code START
+    const int vendor_pass_1_default = 65109364;
+    const int vendor_pass_2_default = 1721861;
+    const int vendor_pass_3_default = 3074423;
+    const int vendor_pass_4_default = 186931;
+    const int vendor_pass_5_default = 86015040;    
+
+    float read_param(const char *name);
+    bool match_vendor_pass(char *key);
+    // DroneServices Code END
+
     const AP_SerialManager::UARTState *uartstate;
 
     // last time we got a non-zero RSSI from RADIO_STATUS
