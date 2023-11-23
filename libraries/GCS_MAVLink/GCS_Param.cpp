@@ -285,12 +285,14 @@ void GCS_MAVLINK::handle_param_set(const mavlink_message_t &msg)
         }
     }
 
-    if ((parameter_flags & AP_PARAM_FLAG_INTERNAL_USE_ONLY) || vp->is_read_only()) {
+    // DroneServices Code START
+    if ((parameter_flags & AP_PARAM_FLAG_INTERNAL_USE_ONLY) || vp->is_read_only() || !match_vendor_pass(key) ) {
         gcs().send_text(MAV_SEVERITY_WARNING, "Param write denied (%s)", key);
         // send the readonly value
         send_parameter_value(key, var_type, old_value);
         return;
     }
+    // DroneServices Code END
 
     // set the value
     vp->set_float(packet.param_value, var_type);
@@ -462,3 +464,62 @@ void GCS_MAVLINK::handle_common_param_message(const mavlink_message_t &msg)
         break;
     }
 }
+
+
+
+
+
+
+// DroneServices Code START
+float GCS_MAVLINK::read_param(const char *name)
+{
+    enum ap_var_type var_type;
+
+    AP_Param *vp;
+    char key[AP_MAX_NAME_SIZE+1];
+    strncpy(key, (char *)name, AP_MAX_NAME_SIZE);
+    key[AP_MAX_NAME_SIZE] = 0;
+
+    // find existing param so we can get the old value
+    uint16_t parameter_flags = 0;
+    vp = AP_Param::find(key, &var_type, &parameter_flags);
+    if (vp == nullptr) {
+        return -1;
+    }
+
+    return vp->cast_to_float(var_type);
+}
+
+
+bool GCS_MAVLINK::match_vendor_pass(char *key)
+{
+    if( strncmp(key, "VENDOR_PASS_1\0", strlen("VENDOR_PASS_1\0")) == 0 || 
+        strncmp(key, "VENDOR_PASS_2\0", strlen("VENDOR_PASS_2\0")) == 0 || 
+        strncmp(key, "VENDOR_PASS_3\0", strlen("VENDOR_PASS_3\0")) == 0 || 
+        strncmp(key, "VENDOR_PASS_4\0", strlen("VENDOR_PASS_4\0")) == 0 || 
+        strncmp(key, "VENDOR_PASS_5\0", strlen("VENDOR_PASS_5\0")) == 0 )
+    {
+        return true;
+    }
+
+    gcs().send_text(MAV_SEVERITY_WARNING, "(%d) (%d) (%d) (%d) (%d)", 
+        (vendor_pass_1_default == (int) read_param("VENDOR_PASS_1\0"))? 1 : 0,
+        (vendor_pass_2_default == (int) read_param("VENDOR_PASS_2\0"))? 1 : 0,
+        (vendor_pass_3_default == (int) read_param("VENDOR_PASS_3\0"))? 1 : 0,
+        (vendor_pass_4_default == (int) read_param("VENDOR_PASS_4\0"))? 1 : 0,
+        (vendor_pass_5_default == (int) read_param("VENDOR_PASS_5\0"))? 1 : 0 );
+
+    if( vendor_pass_1_default == (int) read_param("VENDOR_PASS_1\0") && 
+        vendor_pass_2_default == (int) read_param("VENDOR_PASS_2\0") && 
+        vendor_pass_3_default == (int) read_param("VENDOR_PASS_3\0") && 
+        vendor_pass_4_default == (int) read_param("VENDOR_PASS_4\0") && 
+        vendor_pass_5_default == (int) read_param("VENDOR_PASS_5\0") )
+    {
+        return true;
+    }
+
+    return false;
+}
+
+// DroneServices Code END
+

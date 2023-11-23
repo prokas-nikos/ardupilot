@@ -230,16 +230,19 @@ public:
         k_param_fs_batt_curr_rtl,
         k_param_rtl_cone_slope, // 137
 
+
+        // DroneServices Code START
+        k_param_vendor_password_1 = 140,
+        k_param_vendor_password_2,
+        k_param_vendor_password_3,
+        k_param_vendor_password_4,
+        k_param_vendor_password_5,
+        // DroneServices Code END
+
         //
         // 140: Sensor parameters
         //
-        k_param_imu = 140, // deprecated - can be deleted
-        k_param_battery_monitoring = 141,   // deprecated - can be deleted
-        k_param_volt_div_ratio, // deprecated - can be deleted
-        k_param_curr_amp_per_volt,  // deprecated - can be deleted
-        k_param_input_voltage,  // deprecated - can be deleted
-        k_param_pack_capacity,  // deprecated - can be deleted
-        k_param_compass_enabled_deprecated,
+        k_param_compass_enabled_deprecated = 145,
         k_param_compass,
         k_param_rangefinder_enabled_old, // deprecated
         k_param_frame_type,
@@ -467,6 +470,14 @@ public:
     AP_Float                acro_balance_pitch;
     AP_Int8                 acro_trainer;
     AP_Float                acro_rp_expo;
+
+    // DroneServices Code START
+    AP_Int32        vendor_password_1;
+    AP_Int32        vendor_password_2;
+    AP_Int32        vendor_password_3;
+    AP_Int32        vendor_password_4;
+    AP_Int32        vendor_password_5;
+    // DroneServices Code END
 
     // Note: keep initializers here in the same order as they are declared
     // above.
